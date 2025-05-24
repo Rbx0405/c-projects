@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <sqlca.h>
+
+int main() {
+    EXEC SQL BEGIN DECLARE SECTION;
+    char username[] = "username";
+    char password[] = "password";
+    char emp_name[50];
+    int emp_id = 101;
+    EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL CONNECT :username IDENTIFIED BY :password;
+
+    EXEC SQL SELECT emp_name INTO :emp_name
+             FROM employees
+             WHERE emp_id = :emp_id;
+
+    printf("Employee Name: %s\n", emp_name);
+
+    EXEC SQL COMMIT WORK RELEASE;
+
+    return 0;
+}
